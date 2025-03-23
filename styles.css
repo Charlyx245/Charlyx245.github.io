@@ -151,11 +151,10 @@ body {
   transform: scale(1.05);
 }
 
-/* Kommo Widget iframe dentro del contenedor */
+/* Forzar el iframe del widget de Kommo a ocupar el espacio */
 #kommo_widget_container iframe {
   width: 100% !important;
   height: 100% !important;
   display: block !important;
   z-index: 99999 !important;
 }
-
