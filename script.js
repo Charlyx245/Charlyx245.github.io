@@ -1,8 +1,3 @@
-function sendToKommo(username, password) {
-  // Este paso puede quedar simulado para pruebas
-  console.log("Enviando a Kommo:", username, password);
-}
-
 function login() {
   let username = document.getElementById("username").value.trim();
   let password = document.getElementById("password").value.trim();
@@ -19,13 +14,11 @@ function login() {
     return;
   }
 
-  setCookie("chatUser", username, 30);
-  sendToKommo(username, password);
-
+  // Ocultar login y mostrar header
   document.getElementById("loginForm").style.display = "none";
   document.getElementById("chatHeader").style.display = "flex";
 
-  // Esperar 1 segundo antes de enviar datos al widget de Kommo
+  // Enviar mensaje inicial al widget
   setTimeout(() => {
     if (window.crmPlugin && window.crmPlugin.setMeta) {
       window.crmPlugin.setMeta({
@@ -48,19 +41,4 @@ function toggleChat() {
     setTimeout(() => chat.classList.add("open"), 10);
     button.innerHTML = "✖";
   }
-}
-
-function setCookie(name, value, days) {
-  let date = new Date();
-  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-  document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + date.toUTCString() + "; path=/";
-}
-
-function getCookie(name) {
-  let cookies = document.cookie.split("; ");
-  for (let cookie of cookies) {
-    let [key, value] = cookie.split("=");
-    if (key === name) return decodeURIComponent(value);
-  }
-  return "";
 }
