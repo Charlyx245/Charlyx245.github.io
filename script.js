@@ -1,28 +1,38 @@
-// Función para enviar los datos del usuario y contraseña al Webhook de Kommo
+// Función para enviar los datos del usuario y contraseña al API de Kommo
 function sendToKommo(username, password) {
-    const data = {
-        username: username,
-        password: password,  // Enviar la contraseña (puedes encriptarla si es necesario)
-    };
+    const apiToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImMyMDg2MmEwN2FmMGEzYzc0N2EzYzdjZWQwM2Q4ZmVjNmE4MzQxMjBkZGE0NjQ0NmNhMTU2M2I4Yzg1ZjUwZDkzOWYwMjNkNDE4MzIwMDUyIn0.eyJhdWQiOiIzOTQwYzU2Mi1jMTdlLTRjODItODIxOS1mN2U0NDY1ODIzMzEiLCJqdGkiOiJjMjA4NjJhMDdhZjBhM2M3NDdhM2M3Y2VkMDNkOGZlYzZhODM0MTIwZGRhNDY0NDZjYTE1NjNiOGM4NWY1MGQ5MzlmMDIzZDQxODMyMDA1MiIsImlhdCI6MTc0Mjc1NTU4NSwibmJmIjoxNzQyNzU1NTg1LCJleHAiOjE3NDU5NzEyMDAsInN1YiI6IjEyOTE0Mjg3IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjM0MzQ1MjMxLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwiaGFzaF91dWlkIjoiODUzNDkxNjMtMTlkNC00N2M3LTlkNzUtZTk5NDNlODY5ZmU5IiwiYXBpX2RvbWFpbiI6ImFwaS1jLmtvbW1vLmNvbSJ9.dNE1vCucFD1O3m4SMCpOC7cIm6ntsdOaUOSgX_YvttN7BFjut69qOq1mezhsrGa5-hBoXhx7Do_khe3-aGfWLpBXPsY7g9mzjG7b4jLwyasjg6RYNghqOiUcOvTQBojmIoMLQo2uEemEuL_GanT4tH-xVNV0NhXUl2t0RDlm-yNHMaqpJj-YIMkSV5c_-Jbw5z7mLVVG4R8PDGtmK7xhcOwD_a2dfeCuQNGhYNxRF6QOxmVz2daRoO0S0U8YzWwsQ7DfWHEcjdZJKmDflRmtlMc6j10rkeT3-bQ3IZ9k6slgV9t8u885TB6wnQVj4uaRg1gry_wftnOsVCUmrKbhMA";  // ← Reemplazar por tu token real
+    const subdomain = "sinocaydiseno.kommo.com";   // ← Reemplazar por tu subdominio, ej: gana365
 
-    // Cambia la URL para apuntar a tu API creada en Vercel
-    fetch('/api/kommo', {  // Esta es la URL de tu API en Vercel
+    const data = [
+        {
+            name: username,
+            custom_fields_values: [
+                {
+                    field_code: "PASSWORD", // opcional, solo si tenés un campo personalizado
+                    values: [{ value: password }]
+                }
+            ]
+        }
+    ];
+
+    fetch(`https://${subdomain}.amocrm.com/api/v4/contacts`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiToken}`,
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(result => {
-        console.log("Datos enviados correctamente:", result);
+        console.log("Contacto creado en Kommo:", result);
     })
     .catch(error => {
-        console.error("Error al enviar a Kommo:", error);
+        console.error("Error al conectar con Kommo:", error);
     });
 }
 
-// Función de login: guarda el usuario en cookies y envía los datos al Webhook de Kommo
+// Función de login: guarda el usuario en cookies y envía los datos a Kommo
 function login() {
     let username = document.getElementById("username").value.trim();
     let password = document.getElementById("password").value.trim();
@@ -42,29 +52,12 @@ function login() {
     // Guardar usuario en cookies
     setCookie("chatUser", username, 30);
 
-    // Enviar los datos al Webhook de Kommo (a través de la API que hemos configurado en Vercel)
+    // Enviar los datos a Kommo
     sendToKommo(username, password);
 
-    // Mostrar el chat de soporte y actualizar la parte superior
+    // Ocultar formulario de login y mostrar la cabecera del chat
     document.getElementById("loginForm").style.display = "none";
-    document.getElementById("chatIframe").style.display = "block";
-    document.getElementById("chatHeader").style.display = "flex";  // Mostrar la cabecera
-
-    // Llamamos a la función para iniciar el Salesbot
-    startSalesBot(username);
-}
-
-// Función para iniciar el Salesbot en Kommo
-function startSalesBot(username) {
-    console.log("Salesbot iniciado para el usuario:", username);
-
-    setTimeout(function() {
-        // Cambiar el contenido del chatbox para incluir el Salesbot
-        const chatIframe = document.getElementById("chatIframe");
-        chatIframe.src = `https://www.kommo.com/chatbot?user=${username}`;  // URL del Salesbot en Kommo
-        
-        chatIframe.style.display = "block";  // Mostrar el iframe con el Salesbot
-    }, 2000);  // Esperar 2 segundos antes de mostrar el Salesbot
+    document.getElementById("chatHeader").style.display = "flex";
 }
 
 // Función para abrir y cerrar el chat flotante
