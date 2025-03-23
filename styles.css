@@ -151,7 +151,7 @@ body {
   transform: scale(1.05);
 }
 
-/* Widget de Kommo embebido */
+/* Kommo widget embebido */
 #kommo_widget_container iframe {
   width: 100% !important;
   height: 100% !important;
