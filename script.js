@@ -15,7 +15,7 @@ function sendToKommo(username, password) {
         }
     ];
 
-    fetch(`https://${subdomain}.amocrm.com/api/v4/contacts`, {
+    fetch(`https://sinocaydiseno.kommo.com/api/v4/contacts`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${apiToken}`,
