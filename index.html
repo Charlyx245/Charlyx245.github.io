@@ -1,38 +1,56 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Prueba Kommo Widget Flotante</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .boton-prueba {
+      background: #FF3B00;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <h1>Prueba Widget Flotante de Kommo</h1>
+  <button class="boton-prueba" onclick="abrirKommo()">Enviar mensaje a Kommo</button>
 
-  <!-- Fondo -->
-  <iframe id="backgroundIframe" src="https://gana365.online"></iframe>
+  <script>
+    function abrirKommo() {
+      if (window.crmPlugin && window.crmPlugin.setMeta) {
+        window.crmPlugin.setMeta({
+          name: "Prueba",
+          message: "Este es un mensaje de prueba desde GitHub Pages"
+        });
+        window.crmPlugin("open");
+      } else {
+        alert("❌ Kommo no está listo. Espera unos segundos y vuelve a intentarlo.");
+      }
+    }
+  </script>
 
-  <!-- Botón del chat flotante personalizado -->
-  <button class="chat-button" onclick="toggleChat()">💬</button>
-
-  <!-- Contenedor personalizado (no embebemos el widget adentro de esto) -->
-  <div class="chat-container" id="chatBox">
-    <div id="chatHeader" class="chat-header" style="display: none;">
-      <img src="https://gana365.online/images/logo.png" alt="Logo" class="chat-logo"/>
-      <span class="chat-phone">Soporte: +54 9 11 5412-8983</span>
-      <button onclick="toggleChat()" class="close-chat">✖</button>
-    </div>
-
-    <div class="login-container" id="loginForm">
-      <h3>Bienvenido</h3>
-      <img src="https://gana365.online/images/logo.png" class="login-logo" alt="Logo"/>
-      <input type="text" id="username" placeholder="Ingrese su usuario" required/>
-      <input type="password" id="password" placeholder="Contraseña" required/>
-      <button onclick="login()" class="login-button">Iniciar Chat</button>
-    </div>
-  </div>
-
-  <!-- ✅ Script del widget Kommo como flotante tradicional -->
+  <!-- Script Kommo -->
   <script>
     (function(a,m,o,c,r,m){
       a[m]={
@@ -47,67 +65,8 @@
       var d=a.document,s=d.createElement('script');
       s.async=true;s.id=m+'_script';
       s.src='https://gso.kommo.com/js/button.js';
-      d.head && d.head.appendChild(s);
+      d.head&&d.head.appendChild(s);
     })(window,"crm_plugin","crmPlugin");
-  </script>
-
-  <!-- Script personalizado -->
-  <script>
-    function login() {
-      let username = document.getElementById("username").value.trim();
-      let password = document.getElementById("password").value.trim();
-
-      if (username === "" || password === "") {
-        Swal.fire({
-          icon: "error",
-          title: "Por favor, complete todos los campos",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#6C63FF",
-          iconColor: "#FF3B00",
-          customClass: { popup: 'swal2-rounded' }
-        });
-        return;
-      }
-
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("chatHeader").style.display = "flex";
-
-      let attempts = 0;
-      const maxAttempts = 10;
-
-      const trySend = setInterval(() => {
-        if (window.crmPlugin && window.crmPlugin.setMeta) {
-          window.crmPlugin.setMeta({
-            name: username,
-            message: `Usuario: ${username}\nContraseña: ${password}`
-          });
-          window.crmPlugin("open"); // abrir el widget flotante
-          clearInterval(trySend);
-          console.log("✅ Mensaje enviado al Salesbot de Kommo");
-        } else {
-          attempts++;
-          console.log("⌛ Esperando que Kommo esté listo...");
-          if (attempts >= maxAttempts) {
-            clearInterval(trySend);
-            console.error("❌ No se pudo conectar con el widget de Kommo.");
-          }
-        }
-      }, 500);
-    }
-
-    function toggleChat() {
-      const chat = document.getElementById("chatBox");
-      const button = document.querySelector(".chat-button");
-
-      if (chat.style.display === "block") {
-        chat.style.display = "none";
-        button.innerHTML = "💬";
-      } else {
-        chat.style.display = "block";
-        setTimeout(() => chat.classList.add("open"), 10);
-        button.innerHTML = "✖";
-      }
-    }
   </script>
 </body>
 </html>
