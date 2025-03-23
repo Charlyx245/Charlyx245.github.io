@@ -1,42 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gana 365 Casino</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat Flotante Kommo</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
-    <!-- Iframe de fondo para mostrar la otra página -->
-    <iframe id="backgroundIframe" src="https://gana365.online"></iframe>
+  <iframe id="backgroundIframe" src="https://gana365.online"></iframe>
 
-    <!-- Botón flotante para abrir/cerrar el chat -->
-    <button class="chat-button" onclick="toggleChat()">💬</button>
+  <button class="chat-button" onclick="toggleChat()">💬</button>
 
-    <!-- Contenedor del chat -->
-    <div class="chat-container" id="chatBox">
-        <!-- Parte superior del chat con logo y teléfono -->
-        <div id="chatHeader" class="chat-header" style="display: none;">
-            <img src="https://gana365.online/images/logo.png" alt="Logo de la Empresa" class="chat-logo">
-            <span class="chat-phone">Soporte: +54 9 11 5412-8983</span>
-            <button onclick="toggleChat()" class="close-chat">✖</button>
-        </div>
-
-        <!-- Formulario de login -->
-        <div class="login-container" id="loginForm">
-            <h3>Bienvenido</h3>
-            <img src="https://gana365.online/images/logo.png" alt="Logo de la Empresa" class="login-logo"> <!-- Logo del formulario -->
-            <input type="text" id="username" placeholder="Ingrese su usuario" required>
-            <input type="password" id="password" placeholder="Contraseña" required>
-            <button onclick="login()" class="login-button">Iniciar Chat</button>
-        </div>
-
-        <!-- Salesbot (iframe) -->
-        <iframe id="chatIframe" class="chat-iframe" src=""></iframe>
+  <div class="chat-container" id="chatBox">
+    <div id="chatHeader" class="chat-header" style="display: none;">
+      <img src="https://gana365.online/images/logo.png" alt="Logo" class="chat-logo"/>
+      <span class="chat-phone">Soporte: +54 9 11 5412-8983</span>
+      <button onclick="toggleChat()" class="close-chat">✖</button>
     </div>
 
-    <script src="script.js"></script>
+    <div class="login-container" id="loginForm">
+      <h3>Bienvenido</h3>
+      <img src="https://gana365.online/images/logo.png" class="login-logo" alt="Logo"/>
+      <input type="text" id="username" placeholder="Ingrese su usuario" required/>
+      <input type="password" id="password" placeholder="Contraseña" required/>
+      <button onclick="login()" class="login-button">Iniciar Chat</button>
+    </div>
+
+    <div id="kommo_widget_container" style="width: 100%; height: 100%; min-height: 300px;"></div>
+  </div>
+
+  <!-- Kommo Widget Script -->
+  <script>
+    (function(a,m,o,c,r,m){
+      a[m]={
+        id:"1036503",
+        hash:"418cb7e2728464ae9d979e2620ffd41197c85e21ea581346a2c53efc3333381c",
+        locale:"es",
+        target: "kommo_widget_container",
+        inline: true,
+        setMeta:function(p){
+          this.params=(this.params||[]).concat([p])
+        }
+      };
+      a[o]=a[o]||function(){(a[o].q=a[o].q||[]).push(arguments)};
+      var d=a.document,s=d.createElement('script');
+      s.async=true;s.id=m+'_script';
+      s.src='https://gso.kommo.com/js/button.js';
+      d.head&&d.head.appendChild(s);
+    })(window,"crm_plugin","crmPlugin");
+  </script>
 </body>
 </html>
