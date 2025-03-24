@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GANA365 Chat</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <iframe id="backgroundIframe" src="https://gana365.online" class="background-iframe"></iframe>
+
+  <div class="chat-container" id="chatBox">
+    <div class="chat-header" id="chatHeader" style="display:none;">
+      <img src="https://gana365.online/images/logo.png" alt="Logo" class="chat-logo" />
+      <span class="chat-phone">Soporte: +54 9 11 5412-8983</span>
+      <button class="close-chat" onclick="toggleChat()">✖</button>
+    </div>
+
+    <div id="loginForm" class="login-container">
+      <h3>Bienvenido</h3>
+      <img src="https://gana365.online/images/logo.png" alt="Logo" class="login-logo"/>
+      <input type="text" id="username" placeholder="Ingrese su usuario" />
+      <input type="password" id="password" placeholder="Contraseña" />
+      <button class="login-button" onclick="login()">INICIAR CHAT</button>
+    </div>
+
+    <iframe id="chatIframe" class="chat-iframe" style="display:none;"></iframe>
+  </div>
+
+  <button class="chat-button" onclick="toggleChat()">💬</button>
+</body>
+</html>
