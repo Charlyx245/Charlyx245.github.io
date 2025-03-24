@@ -1,34 +1,42 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GANA365 Chat</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="script.js" defer></script>
+  <title>Chat Flotante + Mirror</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-  <iframe id="backgroundIframe" src="https://gana365.online" class="background-iframe"></iframe>
 
+  <!-- Iframe de fondo -->
+  <iframe id="backgroundIframe" src="https://gana365.online"></iframe>
+
+  <!-- Botón flotante -->
+  <button class="chat-button" onclick="toggleChat()">💬</button>
+
+  <!-- Contenedor del chat -->
   <div class="chat-container" id="chatBox">
-    <div class="chat-header" id="chatHeader" style="display:none;">
-      <img src="https://gana365.online/images/logo.png" alt="Logo" class="chat-logo" />
+    <!-- Header -->
+    <div id="chatHeader" class="chat-header" style="display: none;">
+      <img src="https://gana365.online/images/logo.png" class="chat-logo" />
       <span class="chat-phone">Soporte: +54 9 11 5412-8983</span>
-      <button class="close-chat" onclick="toggleChat()">✖</button>
+      <button onclick="toggleChat()" class="close-chat">✖</button>
     </div>
 
-    <div id="loginForm" class="login-container">
+    <!-- Login -->
+    <div class="login-container" id="loginForm">
       <h3>Bienvenido</h3>
-      <img src="https://gana365.online/images/logo.png" alt="Logo" class="login-logo"/>
-      <input type="text" id="username" placeholder="Ingrese su usuario" />
-      <input type="password" id="password" placeholder="Contraseña" />
-      <button class="login-button" onclick="login()">INICIAR CHAT</button>
+      <img src="https://gana365.online/images/logo.png" class="login-logo"/>
+      <input type="text" id="username" placeholder="Ingrese su usuario" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
+      <button onclick="login()" class="login-button">Iniciar Chat</button>
     </div>
 
-    <iframe id="chatIframe" class="chat-iframe" style="display:none;"></iframe>
+    <!-- Chat iframe -->
+    <iframe id="chatIframe" class="chat-iframe" src=""></iframe>
   </div>
 
-  <button class="chat-button" onclick="toggleChat()">💬</button>
+  <script src="script.js" defer></script>
 </body>
 </html>
