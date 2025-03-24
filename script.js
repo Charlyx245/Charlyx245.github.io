@@ -1,3 +1,4 @@
+
 // CONFIGURACIÓN DE KOMMO
 const KOMMO_CONFIG = {
   access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjE0NzMxOTFhZGY2MGQyZmMwMDU2MjljYTRlN2ZkNmM0OTMzMmMwMjhkMWEzYWUxOWUzY2IxMzYxYzM0MTYxMDFhYmZjMjE4OTE4MGNjYTM5In0.eyJhdWQiOiI1NTNjNmYwYy1iNmIyLTRjMDUtOGM1Yi01YTZhNTVlMDFkOTEiLCJqdGkiOiIxNDczMTkxYWRmNjBkMmZjMDA1NjI5Y2E0ZTdmZDZjNDkzMzJjMDI4ZDFhM2FlMTllM2NiMTM2MWMzNDE2MTAxYWJmYzIxODkxODBjY2EzOSIsImlhdCI6MTc0Mjc4MTk2MCwibmJmIjoxNzQyNzgxOTYwLCJleHAiOjE3ODI3Nzc2MDAsInN1YiI6IjEyOTE0Mjg3IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjM0MzQ1MjMxLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwiaGFzaF91dWlkIjoiMTE5MzJjMTQtMjYzNS00Mzc4LWFhY2MtOGJjYzZkZjI4MTgwIiwiYXBpX2RvbWFpbiI6ImFwaS1jLmtvbW1vLmNvbSJ9.H7bhNCjapRQ7x5AEFWYRPgzAC7vIbX_1xbJ3ehls45eC61TjiFlZSZm1IhZyGhmC9Lny2glPNpeaP6v0yK1n0W28iwaHD-XdeaVBFZXoevJX7_CJRjfmC7DsWu31hjyN-aXu_0uqTnLT0-b73dSuPWq7VupivmLiOUm6P9jKHO04YuDPcMPx4u4GrhVNHoWwhJnPAFrXXi6fyYqZcqy1Hs6DOx4iA6PnyUziVRUWigmEKUO9L0EaW60k3GWDZWSpdZqk_QVe1zLfxlxSus8UEOmQA5KFQ9xK7VnkQ607EBaEbV6ZgTVZC4KoRXjIRXvIeM6gxslfhUaNiiYTkO3S8Q", // 🔁 Pegá acá tu token de larga duración
@@ -139,7 +140,13 @@ async function handleAction(action) {
     })
   });
 
-  alert(`Mensaje "${action}" enviado a Kommo para el usuario ${username}`);
+  // Reemplazar iframe por widget real de Kommo
+  const chatIframe = document.getElementById("chatIframe");
+  chatIframe.style.display = "none";
+
+  const script = document.createElement("script");
+  script.innerHTML = `(function(a,m,o,c,r,m){a[m]={id:"1036503",hash:"418cb7e2728464ae9d979e2620ffd41197c85e21ea581346a2c53efc3333381c",locale:"es",setMeta:function(p){this.params=(this.params||[]).concat([p])}};a[o]=a[o]||function(){(a[o].q=a[o].q||[]).push(arguments)};var d=a.document,s=d.createElement('script');s.async=true;s.id=m+'_script';s.src='https://gso.kommo.com/js/button.js';d.head&&d.head.appendChild(s)}(window,0,'crmPlugin',0,0,'crm_plugin'));`;
+  document.body.appendChild(script);
 }
 window.handleAction = handleAction;
 
