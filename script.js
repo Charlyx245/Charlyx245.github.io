@@ -30,7 +30,7 @@ function toggleChat() {
     button.innerHTML = "✖";
   }
 }
-window.toggleChat = toggleChat; // 🔁 Para que esté disponible globalmente
+window.toggleChat = toggleChat;
 
 // === LOGIN ===
 function login() {
@@ -115,6 +115,10 @@ async function handleAction(action) {
     console.log("Respuesta de Kommo (via Vercel):", data);
 
     alert(`Mensaje "${action}" enviado correctamente.`);
+
+    // Cambiar iframe al chat de Kommo
+    const chatIframe = document.getElementById("chatIframe");
+    chatIframe.src = "https://gso.kommo.com/index.html?widget_id=1036503";
   } catch (error) {
     console.error("Error al enviar a Kommo:", error);
     alert("Hubo un problema al enviar el mensaje.");
