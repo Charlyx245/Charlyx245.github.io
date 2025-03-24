@@ -1,43 +1,41 @@
+// === CONFIGURACIÓN ===
+const VERCEL_ENDPOINT = "https://kommo-webchat-api-rh85.vercel.app/api/sendToKommo";
 
-// script.js - Versión conectada a Kommo vía Vercel (sin exponer el token)
-
-const KOMMO_API = "https://kommo-webchat-api-rh85.vercel.app/api/sendToKommo";
-
-// Manejo de cookies para usuario y lead
+// === COOKIES ===
 function setCookie(name, value, days) {
-  let date = new Date();
+  const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${date.toUTCString()}; path=/`;
 }
 
 function getCookie(name) {
-  let cookies = document.cookie.split("; ");
-  for (let cookie of cookies) {
-    let [key, value] = cookie.split("=");
-    if (key === name) return decodeURIComponent(value);
-  }
-  return "";
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? decodeURIComponent(match[2]) : "";
 }
 
-// Mostrar / ocultar el chat
+// === TOGGLE CHAT ===
 function toggleChat() {
   const chat = document.getElementById("chatBox");
   const button = document.querySelector(".chat-button");
 
   if (chat.style.display === "block") {
-    chat.style.display = "none";
-    button.innerHTML = "💬";
+    chat.classList.remove("open");
+    setTimeout(() => {
+      chat.style.display = "none";
+      button.innerHTML = "💬";
+    }, 300);
   } else {
     chat.style.display = "block";
     setTimeout(() => chat.classList.add("open"), 10);
     button.innerHTML = "✖";
   }
 }
+window.toggleChat = toggleChat; // 🔁 Para que esté disponible globalmente
 
-// Login de usuario
+// === LOGIN ===
 function login() {
-  let username = document.getElementById("username").value.trim();
-  let password = document.getElementById("password").value.trim();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   if (!username || !password) {
     alert("Por favor completá usuario y contraseña");
@@ -49,13 +47,14 @@ function login() {
   document.getElementById("chatHeader").style.display = "flex";
   showActionButtons(username);
 }
+window.login = login;
 
-// Mostrar botones de acción
+// === MOSTRAR BOTONES ===
 function showActionButtons(username) {
   const chatIframe = document.getElementById("chatIframe");
   chatIframe.style.display = "block";
 
-  const html = \`
+  const html = `
   <html>
   <head><style>
     body { font-family: Poppins, sans-serif; background: #f3f0eb; margin: 0; padding: 20px; font-size: 13px; }
@@ -86,44 +85,44 @@ function showActionButtons(username) {
       <button class="action-button" onclick="parent.handleAction('Retirar')">Retirar</button>
     </div>
   </body>
-  </html>\`;
+  </html>`;
 
-  const blob = new Blob([html], { type: 'text/html' });
+  const blob = new Blob([html], { type: "text/html" });
   chatIframe.src = URL.createObjectURL(blob);
 }
 
-// Acción de botones: enviar mensaje a servidor Vercel
+// === ACCIÓN: Cargar Fichas / Retirar ===
 async function handleAction(action) {
   const username = getCookie("chatUser");
-
   if (!username) {
-    alert("Usuario no identificado.");
+    alert("Por favor iniciá sesión primero.");
     return;
   }
 
   try {
-    const response = await fetch(KOMMO_API, {
+    const response = await fetch(VERCEL_ENDPOINT, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name: username,
-        message: action
-      })
+        message: action,
+      }),
     });
 
-    const result = await response.json();
-    console.log("Respuesta del servidor:", result);
-    alert(`Mensaje "${action}" enviado correctamente`);
+    const data = await response.json();
+    console.log("Respuesta de Kommo (via Vercel):", data);
+
+    alert(`Mensaje "${action}" enviado correctamente.`);
   } catch (error) {
     console.error("Error al enviar a Kommo:", error);
-    alert("Hubo un error al enviar el mensaje. Intentá nuevamente.");
+    alert("Hubo un problema al enviar el mensaje.");
   }
 }
 window.handleAction = handleAction;
 
-// Autologin
+// === AUTOLOGIN SI YA TIENE COOKIE ===
 document.addEventListener("DOMContentLoaded", () => {
   const username = getCookie("chatUser");
   if (username) {
